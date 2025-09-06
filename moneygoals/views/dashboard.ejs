@@ -1,0 +1,47 @@
+<h2>Dashboard</h2>
+
+<p><strong>Total Account Balance:</strong>
+    <%= totalAccountBalance %>
+</p>
+<p><strong>Total Savings Balance:</strong>
+    <%= totalSavingsBalance %>
+</p>
+
+<h3>Monthly Breakdown</h3>
+<table border="1">
+    <tr>
+        <th>Month</th>
+        <th>Income</th>
+        <th>Real Expense</th>
+        <th>Predicted Baseline</th>
+        <th>Account Balance</th>
+        <th>Savings Balance</th>
+        <th>Status</th>
+    </tr>
+
+    <% months.forEach(m=> { %>
+        <tr>
+            <td>
+                <%= m.month %>
+            </td>
+            <td>
+                <%= m.income %>
+            </td>
+            <td>
+                <%= m.realExpense %>
+            </td>
+            <td>
+                <%= m.predictedBaseline %>
+            </td>
+            <td>
+                <%= m.accountBalance %>
+            </td>
+            <td>
+                <%= m.savingsBalance %>
+            </td>
+            <td>
+                <%= m.status %>
+            </td>
+        </tr>
+        <% }) %>
+</table>

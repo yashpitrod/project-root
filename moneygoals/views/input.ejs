@@ -1,11 +1,267 @@
-<h2>Enter Monthly Data</h2>
-<form method="POST" action="/predict">
-    <input type="text" name="income" placeholder="Income"><br>
-    <input type="text" name="house_rent" placeholder="House Rent"><br>
-    <input type="text" name="food_costs" placeholder="Food Costs"><br>
-    <input type="text" name="electricity" placeholder="Electricity"><br>
-    <input type="text" name="gas" placeholder="Gas"><br>
-    <input type="text" name="water" placeholder="Water"><br>
-    <input type="text" name="misc" placeholder="Miscellaneous"><br>
-    <button type="submit">Submit</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Enter Monthly Data - MoneyGoals</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Epunda+Slab:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
+    rel="stylesheet">
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --card: #111111;
+            --shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+            --radius: 12px;
+            font-family: "Bebas Neue", sans-serif;
+            font-weight: 50;
+            font-style: normal;
+            letter-spacing: 1px;
+        }
+
+
+        body,
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            background: var(--black);
+            color: var(--white);
+            background-size: cover;
+            /* This makes the image cover the entire body */
+            background-position: center;
+            /* Centers the image */
+            background-repeat: no-repeat;
+            /* Prevents the image from repeating */
+            /* This ensures the background image stays fixed in place while you scroll */
+            background-attachment: fixed;
+        }
+
+        .background-image {
+            position: fixed;
+            top: 0;
+            margin-top: 0px;
+            left: 0;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            width: 100%;
+            height: 100%;
+            background-image: url('/images/generated-image (4).jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            /* This is the key property. It places the element at the bottom of the stacking order. */
+        }
+
+        .arrow {
+            position: absolute;
+            top: 15%;
+            left: 0;
+            height: 150px;
+            width: 220px;
+            transform: translateY(-50%) scaleY(-1);
+            background-image: url('/images/arrow.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .dolar {
+            position: absolute;
+            top: 65%;
+            left: 92%;
+            height: 220px;
+            width: 220px;
+            background-image: url('/images/dolar.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 1;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .network {
+            position: absolute;
+            margin-top: 40rem;
+            left: -3.5%;
+            height: 160px;
+            width: 240px;
+            background-image: url('/images/network.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 1;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        body:hover .dolar {
+            transform: rotate(30deg);
+        }
+
+        body:hover .network {
+            transform: rotate(30deg);
+        }
+
+        .wrap {
+            margin-top: 5%;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            padding-bottom: 80px;
+            gap: 0px;
+            overflow: hidden;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 10px 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 750px;
+            width: 100%;
+            background: rgb(0 0 0 / 0.75);
+            backdrop-filter: blur(12px);
+        }
+
+        h2.title {
+            font-size: 26px;
+            padding-bottom: 40px;
+            color: var(--white);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            gap: 8px;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(50px) scaleY(0.5);
+            transition: all 0.6s ease-out;
+        }
+
+        .field.visible {
+            opacity: 1;
+            transform: translateY(0) scaleY(1);
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--white);
+        }
+
+        label i {
+            color: var(--white);
+            font-size: 18px;
+        }
+
+        input {
+            padding: 14px 20px;
+            margin-top: 5px;
+            padding-bottom: 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgb(0 8 32 / 0.618);
+            color: white;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--white);
+        }
+
+        .submit-btn {
+            background: var(--white);
+            color: var(--black);
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 6px 14px rgba(255, 255, 255, 0.3);
+            justify-self: center;
+            width: 200px;
+        }
+
+        .submit-btn:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-image"></div>
+    <div class="wrap">
+        <div class="arrow"></div>
+        <div class="dolar"></div>
+        <div class="network"></div>
+        <div class="card">
+            <h2 class="title">Enter Monthly Data</h2>
+            <form method="POST" action="/predict">
+                <div class="field"><label for="income"><i class="fa-solid fa-sack-dollar"></i> Income</label><input
+                        id="income" name="income" type="number" placeholder="Enter your monthly income" required></div>
+                <div class="field"><label for="house_rent"><i class="fa-solid fa-house"></i> House Rent</label><input
+                        id="house_rent" name="house_rent" type="number" placeholder="Enter house rent" required></div>
+                <div class="field"><label for="food_costs"><i class="fa-solid fa-utensils"></i> Food Costs</label><input
+                        id="food_costs" name="food_costs" type="number" placeholder="Enter food costs" required></div>
+                <div class="field"><label for="electricity"><i class="fa-solid fa-bolt"></i> Electricity</label><input
+                        id="electricity" name="electricity" type="number" placeholder="Enter electricity bill" required>
+                </div>
+                <div class="field"><label for="gas"><i class="fa-solid fa-fire-burner"></i> Gas</label><input id="gas"
+                        name="gas" type="number" placeholder="Enter gas bill" required></div>
+                <div class="field"><label for="water"><i class="fa-solid fa-droplet"></i> Water</label><input id="water"
+                        name="water" type="number" placeholder="Enter water bill" required></div>
+                <div class="field"><label for="misc"><i class="fa-solid fa-coins"></i> Miscellaneous</label><input
+                        id="misc" name="misc" type="number" placeholder="Other expenses" required></div>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Animate fields on scroll
+        const fields = document.querySelectorAll('.field');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // animate once only
+                }
+            });
+        }, { threshold: 0.2 });
+        fields.forEach(field => observer.observe(field));
+    </script>
+</body>
+
+</html>

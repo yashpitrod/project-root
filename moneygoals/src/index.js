@@ -22,6 +22,8 @@ app.set("views", path.join(__dirname, "../views"));
 // Routes
 app.use("/predict", predictRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use(express.static("public"));
+
 
 // Root
 app.get("/", (req, res) => {

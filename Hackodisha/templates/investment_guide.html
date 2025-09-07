@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Investment Guide{% endblock %}
+
+{% block head %}
+<style>
+    :root {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --accent-color: #4a9eff;
+    }
+
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .text-primary {
+        color: var(--accent-color) !important;
+    }
+
+    h2 {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    p {
+        color: var(--text-secondary);
+        font-family: 'Inter', sans-serif;
+        line-height: 1.6;
+    }
+
+    .btn-secondary {
+        background-color: var(--bg-secondary);
+        border-color: #404040;
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+    }
+
+    .btn-secondary:hover {
+        background-color: #404040;
+        border-color: #505050;
+        color: var(--text-primary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2 class="text-primary">{{ info.icon }} {{ info.name }}</h2>
+<p>{{ explanation }}</p>
+<a href="{{ url_for('index') }}" class="btn btn-secondary">← Back</a>
+{% endblock %}

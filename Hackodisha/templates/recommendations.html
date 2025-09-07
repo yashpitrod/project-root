@@ -1,0 +1,736 @@
+{% extends "base.html" %}
+
+{% block title %}Your Investment Recommendations{% endblock %}
+
+{% block head %}
+<style>
+    :root {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-card: #2a2a2a;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-muted: #888888;
+        --accent-color: #4a9eff;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --error-color: #ef4444;
+        --info-color: #3b82f6;
+        --border-color: #404040;
+    }
+
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+    }
+
+    .display-5 {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+    }
+
+    .text-primary {
+        color: var(--accent-color) !important;
+    }
+
+    .text-muted {
+        color: var(--text-muted) !important;
+    }
+
+    .lead {
+        color: var(--text-muted);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .card-header {
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .bg-info {
+        background-color: var(--info-color) !important;
+    }
+
+    .bg-success {
+        background-color: var(--success-color) !important;
+    }
+
+    .bg-primary {
+        background-color: var(--accent-color) !important;
+    }
+
+    .bg-secondary {
+        background-color: var(--bg-secondary) !important;
+    }
+
+    .bg-warning {
+        background-color: var(--warning-color) !important;
+    }
+
+    .text-white {
+        color: #ffffff !important;
+    }
+
+    .text-danger {
+        color: var(--error-color) !important;
+    }
+
+    .text-success {
+        color: var(--success-color) !important;
+    }
+
+    .text-info {
+        color: var(--info-color) !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    p {
+        color: var(--text-secondary);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .bg-light {
+        background-color: var(--bg-secondary) !important;
+        color: var(--text-primary);
+    }
+
+    .border-success {
+        border-color: var(--success-color) !important;
+    }
+
+    .border-primary {
+        border-color: var(--accent-color) !important;
+    }
+
+    .border-secondary {
+        border-color: var(--bg-secondary) !important;
+    }
+
+    .border-warning {
+        border-color: var(--warning-color) !important;
+    }
+
+    .border-info {
+        border-color: var(--info-color) !important;
+    }
+
+    .investment-card {
+        transition: all 0.3s ease;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .investment-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .alert {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .alert-warning {
+        background-color: rgba(245, 158, 11, 0.1);
+        border-color: var(--warning-color);
+        color: var(--text-primary);
+    }
+
+    .alert-info {
+        background-color: rgba(59, 130, 246, 0.1);
+        border-color: var(--info-color);
+        color: var(--text-primary);
+    }
+
+    .badge {
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+    }
+
+    .bg-light {
+        background-color: var(--bg-secondary) !important;
+    }
+
+    .bg-opacity-10 {
+        background-color: rgba(var(--bs-success-rgb), 0.1) !important;
+    }
+
+    .btn-outline-primary {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        background-color: transparent;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--accent-color);
+        color: #ffffff;
+    }
+
+    .btn-primary {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    .btn-primary:hover {
+        background-color: #3a8de8;
+        border-color: #3a8de8;
+    }
+
+    .btn-secondary {
+        background-color: var(--bg-secondary);
+        border-color: var(--border-color);
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+    }
+
+    .btn-secondary:hover {
+        background-color: #404040;
+        border-color: #505050;
+        color: var(--text-primary);
+    }
+
+    .btn-success {
+        background-color: var(--success-color);
+        border-color: var(--success-color);
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    .btn-info {
+        background-color: var(--info-color);
+        border-color: var(--info-color);
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    .list-unstyled li {
+        color: var(--text-secondary);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .card-footer {
+        background-color: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+    }
+
+    pre {
+        background-color: var(--bg-secondary) !important;
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        font-family: 'JetBrains Mono', 'Monaco', 'Cascadia Code', monospace;
+    }
+
+    .shadow {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    #scrollToTop {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        cursor: pointer;
+        display: none;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    #scrollToTop:hover {
+        background-color: #3a8de8;
+        transform: scale(1.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 mx-auto">
+
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-5 text-primary">🎯 Your Personalized Investment Plan</h1>
+            <p class="lead text-muted">Based on your financial profile and goals</p>
+        </div>
+
+        {% if data.status == 'insufficient_surplus' %}
+        <!-- Insufficient Surplus -->
+        <div class="alert alert-warning border-warning">
+            <h4><i class="fas fa-exclamation-triangle"></i> Insufficient Funds for Investment</h4>
+            <p class="lead">{{ data.message }}</p>
+
+            <h5 class="mt-4">💡 Our Suggestions:</h5>
+            <ul class="list-group list-group-flush">
+                {% for suggestion in data.suggestions %}
+                <li class="list-group-item border-0">• {{ suggestion }}</li>
+                {% endfor %}
+            </ul>
+
+            <div class="mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-arrow-left"></i> Update My Information
+                </a>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- User Profile Summary -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-header bg-info text-white">
+                        <h4><i class="fas fa-user-circle"></i> Your Financial Profile Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 text-center mb-3">
+                                <div class="bg-light p-3 rounded">
+                                    <i class="fas fa-wallet fa-2x text-primary mb-2"></i>
+                                    <h5 class="text-primary">₹{{ "{:,}".format(data.user_profile.avg_monthly_income) }}
+                                    </h5>
+                                    <small class="text-white">Monthly Income</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center mb-3">
+                                <div class="bg-light p-3 rounded">
+                                    <i class="fas fa-shopping-cart fa-2x text-danger mb-2"></i>
+                                    <h5 class="text-danger">₹{{ "{:,}".format(data.user_profile.monthly_expenses) }}
+                                    </h5>
+                                    <small class="text-white">Monthly Expenses</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center mb-3">
+                                <div class="bg-light p-3 rounded">
+                                    <i class="fas fa-piggy-bank fa-2x text-success mb-2"></i>
+                                    <h5 class="text-success">₹{{ "{:,}".format(data.total_surplus) }}</h5>
+                                    <small class="text-white">Available for Investment</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center mb-3">
+                                <div class="bg-light p-3 rounded">
+                                    <i class="fas fa-chart-line fa-2x text-info mb-2"></i>
+                                    <h5 class="text-info">{{ data.user_profile.income_stability }}/5</h5>
+                                    <small class="text-white">Income Stability</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investment Recommendations -->
+        <h3 class="mb-4"><i class="fas fa-lightbulb text-warning"></i> Recommended Investment Portfolio</h3>
+
+        <div class="row">
+            {% for rec in data.recommendations %}
+            <div class="col-md-6 mb-4">
+                <div
+                    class="card h-100 shadow investment-card
+                     {% if rec.priority == 1 %}border-success{% elif rec.priority == 2 %}border-primary{% else %}border-secondary{% endif %}">
+
+                    <!-- Card Header -->
+                    <div
+                        class="card-header d-flex justify-content-between align-items-center
+                         {% if rec.priority == 1 %}bg-success text-white{% elif rec.priority == 2 %}bg-primary text-white{% else %}bg-secondary text-white{% endif %}">
+                        <h5 class="mb-0">
+                            {{ config.INVESTMENT_OPTIONS[rec.investment_type].icon }}
+                            {{ config.INVESTMENT_OPTIONS[rec.investment_type].name }}
+                        </h5>
+                        <span class="badge bg-light text-white">
+                            {% if rec.priority == 1 %}
+                            🥇 Highest Priority
+                            {% elif rec.priority == 2 %}
+                            🥈 Second Priority
+                            {% else %}
+                            🥉 Third Priority
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <!-- Investment Amount and Percentage -->
+                        <div class="row mb-3">
+                            <div class="col-6 text-center">
+                                <div class="bg-success bg-opacity-10 p-2 rounded">
+                                    <strong class="text-muted d-block">Investment Amount</strong>
+                                    <span class="h4 text-success">₹{{ "{:,}".format(rec.amount|int) }}</span>
+                                </div>
+                            </div>
+                            <div class="col-6 text-center">
+                                <div class="bg-primary bg-opacity-10 p-2 rounded">
+                                    <strong class="text-muted d-block">Portfolio Share</strong>
+                                    <span class="h4 text-primary">{{ "%.1f"|format(rec.percentage) }}%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Expected Return -->
+                        <div class="mb-3 text-center">
+                            <span class="badge bg-warning text-white fs-6 p-2">
+                                <i class="fas fa-chart-line"></i>
+                                Expected Return: {{ rec.expected_return }}% yearly
+                            </span>
+                        </div>
+
+                        <!-- Risk and Liquidity Info -->
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <small class="text-muted">Risk Level:</small><br>
+                                <span class="badge bg-info">{{ config.INVESTMENT_OPTIONS[rec.investment_type].risk
+                                    }}</span>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Liquidity:</small><br>
+                                <span class="badge bg-secondary">{{
+                                    config.INVESTMENT_OPTIONS[rec.investment_type].liquidity }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Why This Investment -->
+                        <div class="mb-3">
+                            <h6 class="text-primary"><i class="fas fa-question-circle"></i> Why this investment?</h6>
+                            <p class="card-text">{{ rec.reason }}</p>
+                        </div>
+
+                        <!-- How to Start -->
+                        <div class="alert alert-info">
+                            <h6 class="alert-heading">
+                                <i class="fas fa-rocket"></i> How to get started:
+                            </h6>
+                            <p class="mb-0">{{ rec.how_to_start }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="card-footer bg-light">
+                        <small class="text-muted">
+                            <i class="fas fa-coins"></i>
+                            Minimum to start: ₹{{ config.INVESTMENT_OPTIONS[rec.investment_type].min_amount }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Portfolio Summary -->
+        {% if data.summary %}
+        <div class="card mt-4 shadow">
+            <div class="card-header bg-success text-white">
+                <h4><i class="fas fa-chart-pie"></i> Your Complete Investment Strategy</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <pre class="bg-light p-3 rounded border">{{ data.summary }}</pre>
+                    </div>
+                    <div class="col-md-4">
+                        <!-- Quick Stats -->
+                        <div class="bg-primary bg-opacity-10 p-3 rounded">
+                            <h5 class="text-primary">Investment Summary:</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-rupee-sign text-success"></i>
+                                    Total Investment: <strong>₹{{ "{:,}".format(data.total_surplus) }}</strong></li>
+                                <li class="mb-2"><i class="fas fa-percentage text-info"></i>
+                                    Average Return: <strong>~{{
+                                        "%.1f"|format((data.recommendations|sum(attribute='expected_return'))/data.recommendations|length
+                                        if data.recommendations else 0) }}%</strong></li>
+                                <li class="mb-2"><i class="fas fa-clock text-warning"></i>
+                                    Investment Horizon: <strong>Long Term (5+ years)</strong></li>
+                                <li class="mb-2"><i class="fas fa-shield-alt text-success"></i>
+                                    Risk Level: <strong>Conservative to Moderate</strong></li>
+                            </ul>
+                        </div>
+
+                        <!-- Monthly SIP Suggestion -->
+                        <div class="bg-warning bg-opacity-10 p-3 rounded mt-3">
+                            <h6 class="text-warning"><i class="fas fa-calendar-alt"></i> Monthly SIP Suggestion:</h6>
+                            <p class="mb-0">Start with <strong>₹{{ "{:,}".format((data.total_surplus//12)|int)
+                                    }}</strong> per month across different investments</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Important Guidelines -->
+        <div class="card mt-4 border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5><i class="fas fa-exclamation-triangle"></i> Important Investment Guidelines</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-success">✅ DO's - Follow These:</h6>
+                        <ul>
+                            <li>Complete your emergency fund first (highest priority)</li>
+                            <li>Invest regularly every month (SIP approach)</li>
+                            <li>Stay invested for long term (minimum 5 years)</li>
+                            <li>Don't panic during market fluctuations</li>
+                            <li>Choose investments that beat inflation</li>
+                            <li>Review your portfolio annually</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-danger">❌ DON'Ts - Avoid These:</h6>
+                        <ul>
+                            <li>Don't put all money in one investment</li>
+                            <li>Don't fall for get-rich-quick schemes</li>
+                            <li>Never touch your emergency fund</li>
+                            <li>Don't try to time the market</li>
+                            <li>Don't invest borrowed money</li>
+                            <li>Don't invest without understanding the product</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Steps -->
+        <div class="card mt-4 border-info">
+            <div class="card-header bg-info text-white">
+                <h5><i class="fas fa-list-check"></i> Your Next Steps</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <div class="bg-success text-white rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                                style="width: 60px; height: 60px;">
+                                <strong>1</strong>
+                            </div>
+                            <h6>Build Emergency Fund</h6>
+                            <p class="small">Set aside 3-6 months of expenses in easily accessible accounts</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <div class="bg-primary text-white rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                                style="width: 60px; height: 60px;">
+                                <strong>2</strong>
+                            </div>
+                            <h6>Open Investment Accounts</h6>
+                            <p class="small">Set up necessary accounts (bank, demat, mutual fund)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <div class="bg-warning text-white rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                                style="width: 60px; height: 60px;">
+                                <strong>3</strong>
+                            </div>
+                            <h6>Start Your SIPs</h6>
+                            <p class="small">Begin with small monthly investments, increase gradually</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Useful Apps -->
+                <div class="mt-4">
+                    <h6 class="text-primary">📱 Recommended Apps to Get Started:</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>For Mutual Funds:</strong>
+                            <ul class="list-unstyled ms-3">
+                                <li>• Groww (beginner-friendly)</li>
+                                <li>• Zerodha Coin (low cost)</li>
+                                <li>• ET Money (comprehensive)</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>For Other Investments:</strong>
+                            <ul class="list-unstyled ms-3">
+                                <li>• Bank mobile apps (FD, RD)</li>
+                                <li>• Paytm/PhonePe (Digital Gold)</li>
+                                <li>• Post office (PPF)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center mt-5 mb-4">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg me-3">
+                <i class="fas fa-arrow-left"></i> Create New Plan
+            </a>
+            <button onclick="window.print()" class="btn btn-success btn-lg me-3">
+                <i class="fas fa-print"></i> Print This Plan
+            </button>
+            <a href="{{ url_for('current_rates') }}" class="btn btn-info btn-lg">
+                <i class="fas fa-chart-line"></i> View Current Rates
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Scroll to top button -->
+<button id="scrollToTop" onclick="scrollToTop()" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Animate cards on load
+        const cards = document.querySelectorAll('.investment-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 200); // Stagger animation
+        });
+
+        // Add hover effects to investment cards
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-8px)';
+                this.style.boxShadow = '0 12px 24px rgba(0,0,0,0.3)';
+            });
+
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '';
+            });
+        });
+
+        // Print page preparation
+        window.addEventListener('beforeprint', function () {
+            // Hide action buttons when printing
+            const actionButtons = document.querySelector('.text-center.mt-5');
+            if (actionButtons) {
+                actionButtons.style.display = 'none';
+            }
+        });
+
+        window.addEventListener('afterprint', function () {
+            // Show buttons again after printing
+            const actionButtons = document.querySelector('.text-center.mt-5');
+            if (actionButtons) {
+                actionButtons.style.display = 'block';
+            }
+        });
+
+        // Add click tracking for learn more links
+        const learnMoreLinks = document.querySelectorAll('a[href*="investment_guide"]');
+        learnMoreLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                console.log('User clicked to learn more about:', this.href.split('/').pop());
+            });
+        });
+
+        // Smooth scroll to top when page loads
+        if (window.location.hash === '#recommendations') {
+            document.querySelector('.investment-card').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Calculate and display additional insights
+        const amountElements = document.querySelectorAll('.text-success');
+        let totalInvestment = 0;
+
+        amountElements.forEach(element => {
+            const text = element.textContent;
+            if (text.includes('₹') && text.includes(',')) {
+                const amount = parseInt(text.replace(/[₹,]/g, ''));
+                if (!isNaN(amount) && amount > 1000) {
+                    totalInvestment += amount;
+                }
+            }
+        });
+
+        // Add monthly breakdown insight
+        if (totalInvestment > 0) {
+            const monthlyAmount = Math.round(totalInvestment / 12);
+            console.log(`Monthly investment breakdown: ₹${monthlyAmount.toLocaleString()}`);
+        }
+    });
+
+    // Function to copy investment plan to clipboard
+    function copyPlanToClipboard() {
+        const planText = document.querySelector('pre').textContent;
+        navigator.clipboard.writeText(planText).then(() => {
+            alert('Investment plan copied to clipboard!');
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
+    }
+
+    // Function to share investment plan (for mobile devices)
+    function sharePlan() {
+        if (navigator.share) {
+            const shareData = {
+                title: 'My Investment Plan',
+                text: 'Check out my personalized investment recommendations',
+                url: window.location.href
+            };
+
+            navigator.share(shareData)
+                .then(() => console.log('Plan shared successfully'))
+                .catch((error) => console.log('Error sharing plan:', error));
+        } else {
+            // Fallback for browsers without Web Share API
+            copyPlanToClipboard();
+        }
+    }
+
+    // Add scroll-to-top functionality
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Show scroll-to-top button when user scrolls down
+    window.addEventListener('scroll', function () {
+        const scrollButton = document.getElementById('scrollToTop');
+        if (scrollButton) {
+            if (window.pageYOffset > 300) {
+                scrollButton.style.display = 'block';
+            } else {
+                scrollButton.style.display = 'none';
+            }
+        }
+    });
+</script>
+{% endblock %}

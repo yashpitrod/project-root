@@ -1,2 +1,378 @@
-<h2>Welcome to MoneyGoals</h2>
-<a href="/predict">Get Started</a>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>homepage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            overflow-x: hidden;
+        }
+
+        .body0 {
+            position: relative;
+        }
+
+        .header {
+            position: absolute;
+            z-index: 2;
+        }
+
+        .navbar {
+            width: 80vw;
+            margin: 0 1vw;
+        }
+
+        .navbar img {
+            height: 5vh;
+            padding: 10px 10px;
+            margin: 20px 10px;
+            border: 2px white solid;
+            border-radius: 15%;
+        }
+
+        .body1 {
+            position: relative;
+            background-color: black;
+            width: 100vw;
+            /* full width */
+            min-height: 142vh;
+            /* full height */
+            z-index: 0;
+        }
+
+        .circular_laser {
+            position: absolute;
+            top: 0;
+            left: 28vw;
+            width: 72vw;
+            height: 75vh;
+            z-index: 0;
+        }
+
+        .circular_laser video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* fills container without distortion */
+            z-index: 1;
+            /* sits below vignette */
+        }
+
+        .circular_laser::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* video stays clickable */
+            background: radial-gradient(circle, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 1;
+            /* sits above video, below text */
+        }
+
+        .des1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: transparent;
+            width: 50vw;
+            height: 70vh;
+            z-index: 0;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .dashss {
+            position: absolute;
+            top: 66vh;
+            left: 0;
+            background-color: black;
+            width: 100vw;
+            height: 80vh;
+            z-index: 0;
+        }
+
+        .des1 h1 {
+            color: rgb(255, 255, 255);
+            font-size: 90px;
+        }
+
+        .des1 h2 {
+            color: white;
+            font-size: 30px;
+        }
+
+        .dashss img {
+            margin: 0 15vw 0 5vw;
+            width: 70vw;
+            border-radius: 10px;
+        }
+
+        .dashss img {
+            margin: 0 5vw 0 25vw;
+            width: 70vw;
+
+            /* neon glow effect */
+            filter: drop-shadow(0 0 10px #60597b) drop-shadow(0 0 20px #06003f) drop-shadow(0 0 40px #30658a);
+        }
+
+        .container {
+            height: auto;
+            width: auto;
+            position: relative;
+            top: -750px;
+            left: 5vw;
+            z-index: 3;
+        }
+
+        .arrow {
+            position: relative;
+            top: 3px;
+            font-size: large;
+        }
+
+        button {
+            position: relative;
+            padding: 0.6rem 3rem;
+            width: 17rem;
+            color: #2c1a1a;
+            background: #aaaaaa;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            border-radius: 50px;
+            border: none;
+            transition: 0.5s;
+            cursor: pointer;
+            overflow: hidden;
+
+        }
+
+        /* button:hover {
+    color: var(--clr);
+    text-shadow: 0 0 15px var(--clr),
+        0 0 40px var(--clr);
+} */
+
+        button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: var(--x);
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 120px;
+            background: radial-gradient(white 10%, #BEFFF7, #9EDDFF, #6499E9, #aaaaaa, transparent, transparent, transparent);
+            transition: 0.5s, top 0s, left 0s;
+            opacity: 0;
+        }
+
+        button:hover::before {
+            opacity: 1;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            width: calc(100% + 20px);
+            height: calc(100% + 20px);
+            background-size: 600%;
+            border-radius: 47px;
+            filter: blur(10px);
+        }
+
+
+        .body2 {
+
+            width: 100%;
+            padding: 10px 10vw;
+        }
+
+        .body2 h1 {
+            font-size: 90px;
+            margin-bottom: 15px;
+            margin-top: 50px;
+        }
+
+        .body2 h2 {
+            font-size: 20px;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            margin-top: 40px;
+        }
+
+        .f1 {
+            height: 25vw;
+            width: 30vw;
+            border-radius: 20px;
+        }
+
+        .f2 {
+            height: 25vw;
+            width: 50vw;
+            border-radius: 20px;
+        }
+
+        .f3 {
+            height: 25vw;
+            width: 50vw;
+            border-radius: 20px;
+        }
+
+        .f4 {
+            height: 25vw;
+            width: 30vw;
+            border-radius: 20px;
+        }
+
+        /* Add video styling for feature cards */
+        .features video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* fills div without distortion */
+            border-radius: 20px;
+            /* same as parent */
+            display: block;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const buttons = document.querySelectorAll(".btn");
+
+            buttons.forEach((btn) => {
+                btn.addEventListener("mousemove", (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    btn.style.setProperty("--x", `${x}px`);
+                    btn.style.setProperty("--y", `${y}px`);
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="body0">
+        <div class="header">
+            <div class="navbar">
+                <img src="/images/logo.png" alt="">
+            </div>
+        </div>
+        <div class="body1">
+            <div class="circular_laser">
+                <video autoplay loop muted playsinline id="bg-video">
+                    <source src="/images/yourvideo.mp4" type="video/mp4">
+                </video>
+
+            </div>
+            <div class="des1">
+                <h1>Empower Your <br>Financial Journey</h1>
+                <h2>Smart tools and personalized advice for a secure future</h2>
+
+            </div>
+            <div class="dashss">
+                <img src="/images/dashboard.jpg" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <button class="btn" style="--clr:#d6f065; position: relative; z-index: 4;" type="button"
+            onclick="window.location.href='/predict'">
+            <span>Get Started</span>
+            <ion-icon class="arrow" name="arrow-forward-sharp"></ion-icon>
+        </button>
+        <div id="debug-overlay"
+            style="position:fixed;right:12px;bottom:12px;background:#111827;color:#e5e7eb;border:1px solid #334155;border-radius:8px;padding:8px 12px;font-size:12px;z-index:9999;opacity:0.9;">
+            <span>UI ready</span>
+        </div>
+    </div>
+    <div class="body2">
+        <h1>Savings that adapt</h1>
+        <h2>Finflow smooths volatile gig incomes into steady spending, automatic savings, and <br>safe investments —
+            all powered by ML and deployed on the decentralized Akash Network.</h2>
+        <div class="features">
+            <div class="f1">
+                <video autoplay loop muted playsinline>
+                    <source src="/images/f1.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="f2">
+                <video autoplay loop muted playsinline>
+                    <source src="/images/f2.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="f3">
+                <video autoplay loop muted playsinline>
+                    <source src="/images/f3.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="f4">
+                <video autoplay loop muted playsinline>
+                    <source src="/images/f4.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <footer style="background:#0b0b0b;color:#e5e7eb;margin-top:60px;border-top:1px solid #1f2937;">
+        <div
+            style="max-width:1200px;margin:0 auto;padding:32px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;">
+            <div>
+                <h3 style="margin:0 0 10px 0;color:#60a5fa;">About Us</h3>
+                <p style="margin:0;color:#9ca3af;line-height:1.7;">
+                    FinFlow helps you track income and expenses with ML-powered insights and a beautiful, responsive
+                    dashboard.
+                </p>
+            </div>
+            <div>
+                <h3 style="margin:0 0 10px 0;color:#60a5fa;">Contact Us</h3>
+                <p style="margin:0;color:#9ca3af;">Email: <a href="mailto:pitrodayash1412007@gmail.com"
+                        style="color:#e5e7eb;text-decoration:none;">pitrodayash1412007@gmail.com</a></p>
+                <p style="margin:8px 0 0 0;color:#9ca3af;">Dashboard: <a href="/dashboard"
+                        style="color:#e5e7eb;text-decoration:none;">View Dashboard</a></p>
+            </div>
+            <div>
+                <h3 style="margin:0 0 10px 0;color:#60a5fa;">Quick Links</h3>
+                <ul style="list-style:none;padding:0;margin:0;line-height:1.9;color:#9ca3af;">
+                    <li><a href="/predict" style="color:#e5e7eb;text-decoration:none;">Get Started</a></li>
+                    <li><a href="/dashboard" style="color:#e5e7eb;text-decoration:none;">Dashboard</a></li>
+                    <li><a href="http://localhost:5000/" target="_blank" style="color:#e5e7eb;text-decoration:none;">AI
+                            Investment Advisor</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top:1px solid #1f2937;padding:14px 20px;text-align:center;color:#9ca3af;font-size:14px;">
+            © 2025 FinFlow. All rights reserved.
+        </div>
+    </footer>
+</body>
+
+</html>

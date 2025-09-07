@@ -1,0 +1,639 @@
+{% extends "base.html" %}
+
+{% block title %}Investment Calculator - Simple Investment Advisor{% endblock %}
+
+{% block head %}
+<style>
+    :root {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-card: #2a2a2a;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-muted: #888888;
+        --accent-color: #4a9eff;
+        --accent-cyan: #00d4ff;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --error-color: #ef4444;
+        --border-color: #404040;
+        --gradient-primary: linear-gradient(135deg, #4a9eff 0%, #00d4ff 100%);
+        --glow-blue: 0 0 20px rgba(74, 158, 255, 0.3);
+    }
+
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+    }
+
+    .display-4 {
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+    }
+
+    .lead {
+        color: var(--text-muted);
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+    }
+
+    .card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .card-header {
+        background: var(--gradient-primary);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-header h3 {
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    .form-label {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+    }
+
+    .form-control,
+    .form-select {
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        background-color: var(--bg-secondary);
+        border-color: var(--accent-color);
+        color: var(--text-primary);
+        box-shadow: 0 0 0 0.2rem rgba(74, 158, 255, 0.25);
+    }
+
+    .form-text {
+        color: var(--text-muted);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+    }
+
+    .text-danger {
+        color: var(--error-color) !important;
+    }
+
+    h5 {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    hr {
+        border-color: var(--border-color);
+    }
+
+    .bg-primary {
+        background-color: var(--accent-color) !important;
+    }
+
+    .bg-info {
+        background-color: #3b82f6 !important;
+    }
+
+    .bg-success {
+        background-color: var(--success-color) !important;
+    }
+
+    .bg-warning {
+        background-color: var(--warning-color) !important;
+    }
+
+    .btn-primary {
+        background: var(--gradient-primary);
+        border: none;
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--glow-blue);
+    }
+
+    .glow-animation {
+        box-shadow: var(--glow-blue);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: var(--glow-blue);
+        }
+
+        50% {
+            box-shadow: 0 0 25px rgba(74, 158, 255, 0.5);
+        }
+
+        100% {
+            box-shadow: var(--glow-blue);
+        }
+    }
+
+    .border-success {
+        border-color: var(--success-color) !important;
+    }
+
+    .border-warning {
+        border-color: var(--warning-color) !important;
+    }
+
+    .card-title {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    .card-text {
+        color: var(--text-secondary);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .h3 {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+    }
+
+    .h4 {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+    }
+
+    .h6 {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    .small {
+        color: var(--text-muted);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    #surplus-display {
+        background: var(--bg-card);
+        border: 2px solid var(--border-color);
+    }
+
+    .fas {
+        color: var(--accent-cyan);
+    }
+
+    .rounded-circle i {
+        color: #ffffff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">
+                AI Investment Advice
+            </h1>
+            <p class="lead" style="font-size: 1.3rem;">
+                AI investment guidance for everyone - Start your financial journey today
+            </p>
+        </div>
+
+        <!-- Main Form -->
+        <div class="card shadow-lg" style="border-radius: 25px; overflow: hidden;">
+            <div class="card-header text-white py-4">
+                <h3 class="mb-0 text-center">
+                    <i class="fas fa-user-edit me-3"></i>Enter Your Financial Information
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <form id="investmentForm" action="{{ url_for('get_recommendations') }}" method="POST">
+
+                    <!-- Income Section -->
+                    <div class="row mb-5">
+                        <div class="col-md-12 mb-3">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary rounded-circle p-2 me-3"
+                                    style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-rupee-sign text-white"></i>
+                                </div>
+                                <h5 class="mb-0">Income Information</h5>
+                            </div>
+                            <hr style="margin-bottom: 2rem;">
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label for="monthly_income" class="form-label">
+                                <i class="fas fa-wallet me-2"></i>
+                                Average Monthly Income (₹) <span class="text-danger">*</span>
+                            </label>
+                            <input type="number" class="form-control form-control-lg" id="monthly_income"
+                                name="monthly_income" min="5000" max="500000" step="1000"
+                                value="{{ prefill.monthly_income or 30000 }}" required
+                                style="font-size: 1.1rem; padding: 1rem;">
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                If your income varies, provide the average amount
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label for="monthly_expenses" class="form-label">
+                                <i class="fas fa-shopping-cart me-2"></i>
+                                Total Monthly Expenses (₹) <span class="text-danger">*</span>
+                            </label>
+                            <input type="number" class="form-control form-control-lg" id="monthly_expenses"
+                                name="monthly_expenses" min="0" step="500"
+                                value="{{ prefill.monthly_expenses or 20000 }}" required
+                                style="font-size: 1.1rem; padding: 1rem;">
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Include rent, food, bills, EMIs, and all expenses
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Details Section -->
+                    <div class="row mb-5">
+                        <div class="col-md-12 mb-3">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-info rounded-circle p-2 me-3"
+                                    style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-users text-white"></i>
+                                </div>
+                                <h5 class="mb-0">Personal Information</h5>
+                            </div>
+                            <hr style="margin-bottom: 2rem;">
+                        </div>
+
+                        <div class="col-md-4 mb-4">
+                            <label for="age" class="form-label">
+                                <i class="fas fa-user me-2"></i>
+                                Your Age
+                            </label>
+                            <input type="number" class="form-control form-control-lg" id="age" name="age" min="18"
+                                max="65" value="30" required style="font-size: 1.1rem; padding: 1rem;">
+                        </div>
+
+                        <div class="col-md-4 mb-4">
+                            <label for="dependents" class="form-label">
+                                <i class="fas fa-user-friends me-2"></i>
+                                Number of Dependents
+                            </label>
+                            <select class="form-select form-select-lg" id="dependents" name="dependents"
+                                style="font-size: 1.1rem; padding: 1rem;">
+                                <option value="0">0 - No dependents</option>
+                                <option value="1" selected>1 - One person</option>
+                                <option value="2">2 - Two people</option>
+                                <option value="3">3 - Three people</option>
+                                <option value="4">4 - Four people</option>
+                                <option value="5">5+ - Five or more</option>
+                            </select>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                People who financially depend on you
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-4">
+                            <label for="income_stability" class="form-label">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Income Stability
+                            </label>
+                            <select class="form-select form-select-lg" id="income_stability" name="income_stability"
+                                style="font-size: 1.1rem; padding: 1rem;">
+                                <option value="1">1 - Very Unstable (Freelance)</option>
+                                <option value="2">2 - Unstable (Contract work)</option>
+                                <option value="3" selected>3 - Average (Small business)</option>
+                                <option value="4">4 - Stable (Regular job)</option>
+                                <option value="5">5 - Very Stable (Government/MNC)</option>
+                            </select>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                How predictable is your monthly income?
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Surplus Display -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div id="surplus-display" class="card text-center p-4" style="border-radius: 20px;">
+                                <div class="d-flex align-items-center justify-content-center mb-2">
+                                    <div class="bg-success rounded-circle p-2 me-3"
+                                        style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-piggy-bank text-white"></i>
+                                    </div>
+                                    <h5 class="mb-0">Available for Investment:</h5>
+                                </div>
+                                <p id="surplus-amount" class="h3 mb-0" style="font-weight: 700;">₹ 10,000</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg px-5 py-3 glow-animation"
+                            style="font-size: 1.3rem; border-radius: 50px; position: relative; overflow: hidden;">
+                            <i class="fas fa-magic me-2"></i>
+                            Get My Investment Plan
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Quick Info Cards -->
+        <div class="row mt-5">
+            <div class="col-md-4 mb-4">
+                <div class="card text-center h-100 border-success">
+                    <div class="card-body p-4">
+                        <div class="bg-success rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                            style="width: 80px; height: 80px;">
+                            <i class="fas fa-shield-alt fa-2x text-white"></i>
+                        </div>
+                        <h5 class="card-title" style="font-weight: 600;">Safe & Secure</h5>
+                        <p class="card-text">
+                            We recommend only proven, low-risk investment options suitable for your income level
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card text-center h-100 border-primary">
+                    <div class="card-body p-4">
+                        <div class="bg-primary rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                            style="width: 80px; height: 80px;">
+                            <i class="fas fa-graduation-cap fa-2x text-white"></i>
+                        </div>
+                        <h5 class="card-title" style="font-weight: 600;">Easy to Understand</h5>
+                        <p class="card-text">
+                            All suggestions explained in simple English with step-by-step guidance
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card text-center h-100 border-warning">
+                    <div class="card-body p-4">
+                        <div class="bg-warning rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                            style="width: 80px; height: 80px;">
+                            <i class="fas fa-coins fa-2x text-white"></i>
+                        </div>
+                        <h5 class="card-title" style="font-weight: 600;">Start Small</h5>
+                        <p class="card-text">
+                            Begin your investment journey with as little as ₹500 per month
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How it Works Section -->
+        <div class="card mt-5" style="border-radius: 25px;">
+            <div class="card-body p-5">
+                <h3 class="text-center mb-5" style="font-weight: 700; font-size: 2.2rem;">
+                    <i class="fas fa-cogs me-3"></i>How It Works
+                </h3>
+                <div class="row">
+                    <div class="col-md-3 text-center mb-4">
+                        <div class="position-relative">
+                            <div class="bg-primary rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center glow-animation"
+                                style="width: 70px; height: 70px;">
+                                <span style="font-size: 1.5rem; font-weight: 800; color: white;">1</span>
+                            </div>
+                            <h6 style="font-weight: 600;">Enter Details</h6>
+                            <p class="small">
+                                Provide your income and expense information securely
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center mb-4">
+                        <div class="position-relative">
+                            <div class="bg-success rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                                style="width: 70px; height: 70px;">
+                                <span style="font-size: 1.5rem; font-weight: 800; color: white;">2</span>
+                            </div>
+                            <h6 style="font-weight: 600;">AI Analysis</h6>
+                            <p class="small">
+                                Our system analyzes your financial situation intelligently
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center mb-4">
+                        <div class="position-relative">
+                            <div class="bg-warning rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                                style="width: 70px; height: 70px;">
+                                <span style="font-size: 1.5rem; font-weight: 800; color: white;">3</span>
+                            </div>
+                            <h6 style="font-weight: 600;">Get Plan</h6>
+                            <p class="small">
+                                Receive personalized investment recommendations
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center mb-4">
+                        <div class="position-relative">
+                            <div class="bg-info rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                                style="width: 70px; height: 70px;">
+                                <span style="font-size: 1.5rem; font-weight: 800; color: white;">4</span>
+                            </div>
+                            <h6 style="font-weight: 600;">Start Investing</h6>
+                            <p class="small">
+                                Follow the step-by-step guidance to begin
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="card"
+                    style="background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%); border-radius: 20px;">
+                    <div class="card-body p-4">
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="fas fa-users fa-2x mb-2"></i>
+                                    <h4 style="font-weight: 700;">10,000+</h4>
+                                    <p class="mb-0">Happy Users</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="fas fa-chart-line fa-2x mb-2"></i>
+                                    <h4 style="font-weight: 700;">₹50L+</h4>
+                                    <p class="mb-0">Invested</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="fas fa-star fa-2x mb-2"></i>
+                                    <h4 style="font-weight: 700;">4.8/5</h4>
+                                    <p class="mb-0">User Rating</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="fas fa-clock fa-2x mb-2"></i>
+                                    <h4 style="font-weight: 700;">2 Min</h4>
+                                    <p class="mb-0">Quick Analysis</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+        {% endblock %}
+
+        {% block scripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const incomeInput = document.getElementById('monthly_income');
+                const expensesInput = document.getElementById('monthly_expenses');
+                const surplusDisplay = document.getElementById('surplus-amount');
+                const surplusCard = document.getElementById('surplus-display');
+
+                function calculateSurplus() {
+                    const income = parseInt(incomeInput.value) || 0;
+                    const expenses = parseInt(expensesInput.value) || 0;
+                    const surplus = income - expenses;
+
+                    if (surplus <= 0) {
+                        surplusDisplay.innerHTML = '<span style="color: #EF4444;">❌ No savings available!</span>';
+                        surplusCard.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+                        surplusCard.style.background = 'rgba(239, 68, 68, 0.1)';
+                    } else {
+                        surplusDisplay.innerHTML = `<span style=\"color: var(--accent-cyan);\">✅ ₹${surplus.toLocaleString()}</span>`;
+                        surplusCard.style.borderColor = 'rgba(0, 212, 255, 0.5)';
+                        surplusCard.style.background = 'rgba(0, 212, 255, 0.1)';
+                    }
+
+                    // Update maximum expense limit
+                    expensesInput.max = income;
+                }
+
+                // Add event listeners
+                incomeInput.addEventListener('input', calculateSurplus);
+                expensesInput.addEventListener('input', calculateSurplus);
+
+                // Initial calculation
+                calculateSurplus();
+
+                // Add input focus effects
+                const inputs = document.querySelectorAll('.form-control, .form-select');
+                inputs.forEach(input => {
+                    input.addEventListener('focus', function () {
+                        this.style.transform = 'translateY(-2px)';
+                        this.style.boxShadow = '0 5px 15px rgba(74, 144, 226, 0.2)';
+                    });
+
+                    input.addEventListener('blur', function () {
+                        this.style.transform = 'translateY(0)';
+                        this.style.boxShadow = 'none';
+                    });
+                });
+
+                // Form validation with visual feedback
+                document.getElementById('investmentForm').addEventListener('submit', function (e) {
+                    const income = parseInt(incomeInput.value) || 0;
+                    const expenses = parseInt(expensesInput.value) || 0;
+
+                    if (expenses >= income) {
+                        e.preventDefault();
+
+                        // Show error message
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'alert alert-danger mt-3';
+                        errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Your expenses should be less than your income to have money available for investment.';
+
+                        // Insert error message
+                        const form = document.getElementById('investmentForm');
+                        form.appendChild(errorDiv);
+
+                        // Remove error after 5 seconds
+                        setTimeout(() => {
+                            errorDiv.remove();
+                        }, 5000);
+
+                        // Scroll to error
+                        errorDiv.scrollIntoView({ behavior: 'smooth' });
+
+                        return false;
+                    }
+                });
+
+                // Add card hover effects
+                const cards = document.querySelectorAll('.card');
+                cards.forEach(card => {
+                    card.addEventListener('mouseenter', function () {
+                        this.style.transform = 'translateY(-5px)';
+                    });
+
+                    card.addEventListener('mouseleave', function () {
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+
+                // Add number formatting as user types
+                [incomeInput, expensesInput].forEach(input => {
+                    input.addEventListener('input', function () {
+                        // Remove any non-digit characters except for the current value
+                        let value = this.value.replace(/[^\d]/g, '');
+
+                        // Add thousand separators for display (but keep actual value as number)
+                        if (value) {
+                            // Update the visual display
+                            const displayValue = parseInt(value).toLocaleString('en-IN');
+
+                            // Store cursor position
+                            const cursorPos = this.selectionStart;
+
+                            // Don't update display if user is typing
+                            if (!this.dataset.typing) {
+                                this.dataset.typing = 'true';
+                                setTimeout(() => {
+                                    this.dataset.typing = 'false';
+                                }, 100);
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+        {% endblock %}

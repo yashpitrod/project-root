@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Simple Investment Advisor{% endblock %}
+
+{% block head %}
+<style>
+    :root {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-card: #2a2a2a;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --accent-color: #4a9eff;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --error-color: #ef4444;
+    }
+
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+        color: var(--text-primary);
+    }
+
+    .text-primary {
+        color: var(--accent-color) !important;
+    }
+
+    .text-center h2 {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+    }
+
+    .card {
+        background-color: var(--bg-card);
+        border: 1px solid #404040;
+        color: var(--text-primary);
+    }
+
+    .card-body h5 {
+        color: var(--text-secondary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+    }
+
+    .card-body h3 {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+    }
+
+    .card-header {
+        background-color: var(--accent-color);
+        border-bottom: 1px solid #404040;
+    }
+
+    .card-header h5 {
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    .border-primary {
+        border-color: var(--accent-color) !important;
+    }
+
+    .bg-primary {
+        background-color: var(--accent-color) !important;
+    }
+
+    .text-white {
+        color: #ffffff !important;
+    }
+
+    h3 {
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    .list-unstyled li {
+        color: var(--text-secondary);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .shadow-sm {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-primary text-center mb-4">💰 Investment Dashboard</h2>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5>Total Income</h5>
+                    <h3>₹{{ "{:,}".format(data.total_income) }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5>Total Expenses</h5>
+                    <h3>₹{{ "{:,}".format(data.total_expenses) }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5>Surplus</h5>
+                    <h3>₹{{ "{:,}".format(data.surplus) }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations -->
+    <h3 class="mb-3">Suggested Investments</h3>
+    <div class="row">
+        {% for rec in data.recommendations %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5>{{ config.INVESTMENT_OPTIONS[rec.investment_type].icon }} {{
+                        config.INVESTMENT_OPTIONS[rec.investment_type].name }}</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ rec.reason }}</p>
+                    <ul class="list-unstyled">
+                        <li>Amount: ₹{{ "{:,}".format(rec.amount|int) }}</li>
+                        <li>Portfolio %: {{ "%.1f"|format(rec.percentage) }}%</li>
+                        <li>Expected Return: {{ rec.expected_return }}%</li>
+                        <li>Risk: {{ config.INVESTMENT_OPTIONS[rec.investment_type].risk }}</li>
+                        <li>Liquidity: {{ config.INVESTMENT_OPTIONS[rec.investment_type].liquidity }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

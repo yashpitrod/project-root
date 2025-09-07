@@ -1,47 +1,551 @@
-<h2>Dashboard</h2>
+<!DOCTYPE html>
+<html lang="en">
 
-<p><strong>Total Account Balance:</strong>
-    <%= totalAccountBalance %>
-</p>
-<p><strong>Total Savings Balance:</strong>
-    <%= totalSavingsBalance %>
-</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finflow Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-<h3>Monthly Breakdown</h3>
-<table border="1">
-    <tr>
-        <th>Month</th>
-        <th>Income</th>
-        <th>Real Expense</th>
-        <th>Predicted Baseline</th>
-        <th>Account Balance</th>
-        <th>Savings Balance</th>
-        <th>Status</th>
-    </tr>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            /* Pure dark background */
+            color: #e5e7eb;
+            line-height: 1.6;
+        }
 
-    <% months.forEach(m=> { %>
-        <tr>
-            <td>
-                <%= m.month %>
-            </td>
-            <td>
-                <%= m.income %>
-            </td>
-            <td>
-                <%= m.realExpense %>
-            </td>
-            <td>
-                <%= m.predictedBaseline %>
-            </td>
-            <td>
-                <%= m.accountBalance %>
-            </td>
-            <td>
-                <%= m.savingsBalance %>
-            </td>
-            <td>
-                <%= m.status %>
-            </td>
-        </tr>
-        <% }) %>
-</table>
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #111827;
+            /* Solid dark */
+            border-right: 1px solid #1f2937;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .sidebar .brand {
+            padding: 24px 20px;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .sidebar .brand h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #60a5fa;
+            /* Accent */
+        }
+
+        .sidebar .brand p {
+            margin: 4px 0 0 0;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            flex-grow: 1;
+            gap: 4px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            color: #9ca3af;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-item.active {
+            background: #1f2937;
+            color: #60a5fa;
+        }
+
+        .nav-item:hover:not(.active) {
+            background: #27272a;
+            color: #f9fafb;
+        }
+
+        .sidebar-bottom {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border-top: 1px solid #1f2937;
+        }
+
+        .btn-export,
+        .btn-logout {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-export {
+            background: #059669;
+            color: white;
+        }
+
+        .btn-export:hover {
+            background: #10b981;
+        }
+
+        .btn-logout {
+            background: transparent;
+            color: #9ca3af;
+            border: 1px solid #374151;
+        }
+
+        .btn-logout:hover {
+            background: #1f2937;
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+
+        /* Main */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        /* Topbar */
+        .welcome-text {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #f9fafb;
+        }
+
+        .date-text {
+            color: #9ca3af;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* KPI Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            margin: 10px;
+            padding: 24px;
+            padding-top: 35px;
+            padding-bottom: 45px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #374151;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: #9ca3af;
+            margin: 0 0 12px 0;
+        }
+
+        .card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #f9fafb;
+        }
+
+        .card-change {
+            font-size: 12px;
+            color: #10b981;
+            margin-top: 8px;
+        }
+
+        /* Charts */
+        .chart-container {
+            background: #111827;
+            border: 1px solid #1f2937;
+            padding: 24px;
+            border-radius: 12px;
+            max-width: 500px;
+        }
+
+        .chart-container h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f9fafb;
+            margin-bottom: 20px;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 300px !important;
+        }
+
+        /* Transactions Table */
+        .transactions table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .transactions th {
+            background: #1f2937;
+            padding: 16px 12px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+        }
+
+        .transactions td {
+            padding: 16px 12px;
+            border-bottom: 1px solid #27272a;
+            font-size: 14px;
+            color: #e5e7eb;
+        }
+
+        .transactions tbody tr:hover {
+            background: #1f2937;
+        }
+
+        /* Status Badges */
+        .status-balanced {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+        }
+
+        .status-good {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .status-over {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .status-excellent {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: auto;
+            padding: 20px 0;
+            color: #6b7280;
+            font-size: 14px;
+            border-top: 1px solid #1f2937;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"
+        defer></script>
+    <script>
+        // Pass server data to JS safely via JSON script tag
+    </script>
+    <script id="months-json" type="application/json"><%- JSON.stringify(months) %></script>
+    <script>
+        window.ejsMonths = JSON.parse(document.getElementById('months-json').textContent);
+    </script>
+    <script defer>
+        window.onload = () => {
+            const txTableBody = document.querySelector('#txTable tbody');
+            const totalAccountCard = document.getElementById('totalAccountBalance');
+            const avgSavingsCard = document.getElementById('avgSavings');
+            const totalSalaryCard = document.getElementById('totalIncome');
+            let months = window.ejsMonths;
+
+            // Fill the transactions table FROM server data:
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount || 0);
+            }
+            function getStatusClass(status) {
+                if (!status) return '';
+                let v = status.toLowerCase();
+                if (v.includes('over')) return "status-badge status-over";
+                if (v.includes('exc')) return "status-badge status-excellent";
+                if (v.includes('good')) return "status-badge status-good";
+                return "status-badge status-balanced";
+            }
+
+            txTableBody.innerHTML = months.map(m =>
+                `<tr>
+                    <td><strong>${m.month}</strong></td>
+                    <td>${formatCurrency(m.income)}</td>
+                    <td>${formatCurrency(m.realExpense)}</td>
+                    <td>${formatCurrency(m.predictedBaseline)}</td>
+                    <td>${formatCurrency(m.accountBalance)}</td>
+                    <td>${formatCurrency(m.savingsBalance)}</td>
+                    <td><span class="${getStatusClass(m.status)}">${m.status || ""}</span></td>
+                </tr>`).join('');
+
+            // KPI cards
+            let totalAccount = months.reduce((s, m) => s + (m.accountBalance || 0), 0);
+            let totalIncome = months.reduce((s, m) => s + (m.income || 0), 0);
+            let totalSavingsSum = months.reduce((s, m) => s + (m.savingsBalance || 0), 0);
+            let avgSavings = months && months.length ? Math.round(totalSavingsSum / months.length) : 0;
+            totalAccountCard.textContent = formatCurrency(totalAccount);
+            if (avgSavingsCard) avgSavingsCard.textContent = formatCurrency(avgSavings);
+            totalSalaryCard.textContent = formatCurrency(totalIncome);
+
+            // MoM change calculations for three KPIs
+            const changeEls = {
+                account: document.getElementById('accountChange'),
+                savings: document.getElementById('savingsChange'),
+                income: document.getElementById('incomeChange')
+            };
+            const latest = months && months.length ? months[months.length - 1] : null;
+            const previous = months && months.length > 1 ? months[months.length - 2] : null;
+            function computeChange(curr, prev) {
+                if (!previous || prev === 0) {
+                    return { text: '0.0% from last month', color: '#9ca3af' };
+                }
+                const diff = curr - prev;
+                const pct = (diff / Math.abs(prev)) * 100;
+                const positive = diff >= 0;
+                return {
+                    text: `${positive ? '+' : ''}${pct.toFixed(1)}% from last month`,
+                    color: positive ? '#22c55e' : '#ef4444'
+                };
+            }
+            if (latest) {
+                const accChange = computeChange(latest.accountBalance || 0, (previous && previous.accountBalance) || 0);
+                const savChange = computeChange(latest.savingsBalance || 0, (previous && previous.savingsBalance) || 0);
+                const incChange = computeChange(latest.income || 0, (previous && previous.income) || 0);
+                if (changeEls.account) { changeEls.account.textContent = accChange.text; changeEls.account.style.color = accChange.color; }
+                if (changeEls.savings) { changeEls.savings.textContent = savChange.text; changeEls.savings.style.color = savChange.color; }
+                if (changeEls.income) { changeEls.income.textContent = incChange.text; changeEls.income.style.color = incChange.color; }
+            }
+
+            // Expense distribution pie chart removed per request
+
+            // PDF export (remains as is)
+            const exportBtn = document.querySelector('.btn-export');
+            if (exportBtn) exportBtn.addEventListener('click', () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                const fmt = (v) => {
+                    const n = Math.round(parseFloat(v) || 0);
+                    // Use 'Rs ' to avoid unicode font issues in jsPDF core fonts
+                    return 'Rs ' + n.toLocaleString('en-IN', { maximumFractionDigits: 0, useGrouping: true });
+                };
+                doc.setFontSize(20);
+                doc.setTextColor(59, 130, 246);
+                doc.text('YourFintech', 14, 20, { encoding: 'WinAnsiEncoding' });
+                doc.setFontSize(16);
+                doc.setTextColor(51, 65, 85);
+                doc.text('Monthly Financial Report', 14, 30, { encoding: 'WinAnsiEncoding' });
+                doc.setFontSize(10);
+                doc.setTextColor(100, 116, 139);
+                doc.text("Generated on: " + new Date().toLocaleDateString('en-IN'), 14, 38, { encoding: 'WinAnsiEncoding' });
+                const kpiStartY = 50;
+                doc.setFontSize(12);
+                doc.setTextColor(51, 65, 85);
+                doc.text(`Total Account Balance: ${fmt(totalAccount)}`, 14, kpiStartY, { encoding: 'WinAnsiEncoding' });
+                doc.text(`Average Monthly Savings: ${fmt(avgSavings)}`, 14, kpiStartY + 8, { encoding: 'WinAnsiEncoding' });
+                doc.text(`Total Income: ${fmt(totalIncome)}`, 14, kpiStartY + 16, { encoding: 'WinAnsiEncoding' });
+                // Pie
+                const pieCanvas = document.getElementById('pieChart');
+                if (pieCanvas) {
+                    const pieImage = pieCanvas.toDataURL('image/png', 1.0);
+                    doc.addImage(pieImage, 'PNG', 14, kpiStartY + 25, 120, 60);
+                }
+                // Table
+                const tableColumn = [
+                    "Month", "Income", "Expense", "Baseline", "Account", "Savings", "Status"
+                ];
+                const tableRows = months.map(m => [
+                    m.month,
+                    fmt(m.income),
+                    fmt(m.realExpense),
+                    fmt(m.predictedBaseline),
+                    fmt(m.accountBalance),
+                    fmt(m.savingsBalance),
+                    m.status || ""
+                ]);
+                doc.autoTable({
+                    startY: kpiStartY + 90,
+                    head: [tableColumn],
+                    body: tableRows,
+                    theme: 'striped',
+                    headStyles: { fillColor: [15, 23, 42], textColor: 255, fontStyle: 'bold' },
+                    bodyStyles: { textColor: [51, 65, 85] },
+                    alternateRowStyles: { fillColor: [248, 250, 252] },
+                    margin: { left: 14, right: 14 },
+                    styles: { fontSize: 9, cellPadding: 4 }
+                });
+                const pageCount = doc.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(8);
+                    doc.setTextColor(148, 163, 184);
+                    doc.text(
+                        `Page ${i} of ${pageCount} • YourFintech Dashboard © ${new Date().getFullYear()}`,
+                        14, doc.internal.pageSize.getHeight() - 10, { encoding: 'WinAnsiEncoding' }
+                    );
+                }
+                doc.save(`YourFintech_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+            });
+
+            // Fill dynamic date
+            const dateElement = document.querySelector('.date-text');
+            if (dateElement) {
+                dateElement.textContent = new Date().toLocaleDateString('en-US', {
+                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                });
+            }
+
+            // Prefill AI link with latest income/expense for Flask index form
+            try {
+                const aiLink = document.getElementById('ai-link');
+                const latest = (months && months.length) ? months[months.length - 1] : null;
+                if (aiLink && latest) {
+                    const avg_income = latest.income || 0;
+                    const total_exp = latest.realExpense || 0;
+                    const url = new URL('http://localhost:5000/');
+                    url.searchParams.set('monthly_income', String(avg_income));
+                    url.searchParams.set('monthly_expenses', String(total_exp));
+                    aiLink.href = url.toString();
+                }
+            } catch (e) { /* ignore */ }
+        };
+    </script>
+</head>
+
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <h1>Finflow</h1>
+                <p>Financial Dashboard</p>
+            </div>
+            <nav class="nav">
+                <a class="nav-item active" href="/dashboard"><span>Dashboard</span></a>
+                <a class="nav-item" href="/predict"><span>Input Data</span></a>
+                <a class="nav-item" id="ai-link" href="http://localhost:5000/" target="_blank" rel="noopener"><span>AI
+                        Insights</span></a>
+            </nav>
+            <div class="sidebar-bottom">
+                <button class="btn-export"><span>Export PDF</span></button>
+                <form method="POST" action="/logout" style="margin:0;">
+                </form>
+            </div>
+        </aside>
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Topbar -->
+            <header class="topbar">
+                <h2 class="welcome-text">
+                    Welcome,
+                    <%= typeof user !=='undefined' ? (user.name || user) : 'User' %>
+                </h2>
+                <p class="date-text">Loading...</p>
+                <form method="GET" action="/dashboard"
+                    style="margin-top:12px; display:flex; align-items:center; gap:8px;">
+                    <label for="monthFilter" style="font-size:12px;color:#9ca3af;">Filter by Month</label>
+                    <select id="monthFilter" name="month" onchange="this.form.submit()"
+                        style="background:#0b1220;color:#e5e7eb;border:1px solid #334155;border-radius:10px;padding:8px 12px;outline:none; margin-bottom: 10px;">
+                        <option value="">All</option>
+                        <% (distinctMonths || []).forEach(m=> { %>
+                            <option value="<%= m %>" <%=monthFilter===m ? 'selected' : '' %>><%= m %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </form>
+            </header>
+            <!-- KPI Cards -->
+            <section class="cards" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+                <div class="card">
+                    <p class="card-title">Total Account Balance</p>
+                    <p class="value" id="totalAccountBalance">
+                        <%= totalAccountBalance %>
+                    </p>
+                    <p class="card-change" id="accountChange"></p>
+                </div>
+                <div class="card">
+                    <p class="card-title">Average Monthly Savings</p>
+                    <p class="value" id="avgSavings">₹0</p>
+                    <p class="card-change" id="savingsChange"></p>
+                </div>
+                <div class="card">
+                    <p class="card-title">Total Income</p>
+                    <p class="value" id="totalIncome">
+                        <%= months && months.length ? months.reduce((a, m)=> a + (m.income || 0), 0) : 0 %>
+                    </p>
+                    <p class="card-change" id="incomeChange"></p>
+                </div>
+            </section>
+            <!-- Pie Chart -->
+            <!-- Expense Distribution section removed per request -->
+            <!-- Transactions Table -->
+            <section class="transactions">
+                <h3>Monthly Transactions</h3>
+                <table id="txTable">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Income</th>
+                            <th>Expense</th>
+                            <th>Baseline</th>
+                            <th>Account Balance</th>
+                            <th>Savings Balance</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table rows filled by JS from EJS months -->
+                    </tbody>
+                </table>
+            </section>
+            <!-- Footer -->
+            <footer class="footer">
+                © 2025 YourFintech Dashboard. All rights reserved.
+            </footer>
+        </main>
+    </div>
+</body>
+
+</html>

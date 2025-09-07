@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Current Rates{% endblock %}
+
+{% block head %}
+<style>
+  :root {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --accent-color: #4a9eff;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .text-primary {
+    color: var(--accent-color) !important;
+  }
+
+  h2,
+  h4 {
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+  }
+
+  ul,
+  ul li {
+    color: #fff !important;
+  }
+
+  .list-group-item {
+    color: #fff !important;
+    background: transparent !important;
+    border-color: rgba(74, 174, 226, 0.2) !important;
+  }
+
+  /* Force inflation item white regardless of inherited styles */
+  #inflation-item,
+  #inflation-item * {
+    color: #ffffff !important;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2 class="text-primary mb-4">Current Market Rates</h2>
+<ul>
+  <li id="inflation-item" class="text-white">Inflation: {{ rates.inflation }}%</li>
+  <li>Repo Rate: {{ rates.repo_rate }}%</li>
+  <li>Savings Rate: {{ rates.savings_rate }}%</li>
+</ul>
+<h4>Bank FD Rates</h4>
+<ul>
+  {% for bank, rate in rates.fd_rates.items() %}
+  <li>{{ bank | upper }}: {{ rate }}%</li>
+  {% endfor %}
+</ul>
+{% endblock %}

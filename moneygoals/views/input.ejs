@@ -10,212 +10,303 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Epunda+Slab:ital,wght@0,300..900;1,300..900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    rel="stylesheet">
 
     <style>
         :root {
             --black: #000000;
             --white: #ffffff;
             --card: #111111;
-            --shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
-            --radius: 12px;
-            font-family: "Bebas Neue", sans-serif;
-            font-weight: 50;
-            font-style: normal;
-            letter-spacing: 1px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body,
         html {
             overflow-x: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 400;
+            line-height: 1.6;
         }
 
         body {
-            margin: 0;
             background: var(--black);
             color: var(--white);
             background-size: cover;
-            /* This makes the image cover the entire body */
             background-position: center;
-            /* Centers the image */
             background-repeat: no-repeat;
-            /* Prevents the image from repeating */
-            /* This ensures the background image stays fixed in place while you scroll */
             background-attachment: fixed;
+            min-height: 100vh;
         }
 
         .background-image {
             position: fixed;
             top: 0;
-            margin-top: 0px;
-            left: 0;
-            margin-left: 1rem;
-            margin-right: 1rem;
-            width: 100%;
-            height: 100%;
+            left: 9.5%;
+            width: 80vw;
+            height: 90vh;
             background-image: url('/images/generated-image (4).jpg');
             background-size: cover;
             background-position: center;
             z-index: -1;
-            /* This is the key property. It places the element at the bottom of the stacking order. */
+            opacity: 0.3;
         }
 
         .arrow {
             position: absolute;
-            top: 15%;
-            left: 0;
-            height: 150px;
-            width: 220px;
+            top: 10%;
+            left: 2%;
+            height: 120px;
+            width: 180px;
             transform: translateY(-50%) scaleY(-1);
             background-image: url('/images/arrow.png');
             background-size: contain;
             background-repeat: no-repeat;
             pointer-events: none;
             z-index: 1;
+            opacity: 0.6;
         }
 
         .dolar {
             position: absolute;
-            top: 65%;
-            left: 92%;
-            height: 220px;
-            width: 220px;
+            top: 20%;
+            right: 2%;
+            height: 160px;
+            width: 160px;
             background-image: url('/images/dolar.png');
             background-size: contain;
             background-repeat: no-repeat;
             z-index: 1;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.3s ease-in-out;
+            opacity: 0.7;
         }
 
         .network {
             position: absolute;
-            margin-top: 40rem;
-            left: -3.5%;
-            height: 160px;
-            width: 240px;
+            bottom: 10%;
+            left: 1%;
+            height: 120px;
+            width: 180px;
             background-image: url('/images/network.png');
             background-size: contain;
             background-repeat: no-repeat;
             pointer-events: none;
             z-index: 1;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 1s ease-in-out;
+            opacity: 0.6;
         }
 
         body:hover .dolar {
-            transform: rotate(30deg);
+            transform: rotate(15deg);
         }
 
         body:hover .network {
-            transform: rotate(30deg);
+            transform: rotate(-10deg);
         }
 
         .wrap {
-            margin-top: 5%;
-            min-height: 90vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 10px 20px;
-            padding-bottom: 80px;
-            gap: 0px;
-            overflow: hidden;
+            padding: 40px 20px;
+            padding-top: 0px;
+            position: relative;
+            z-index: 2;
         }
 
         .card {
-            background: var(--card);
-            padding: 10px 32px;
+            background: black;
+            backdrop-filter: blur(20px);
+            /* border: 1px solid rgba(255, 255, 255, 0.1); */
+            padding: 48px 40px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            max-width: 750px;
+            max-width: 700px;
             width: 100%;
-            background: rgb(0 0 0 / 0.75);
-            backdrop-filter: blur(12px);
+            position: relative;
         }
 
         h2.title {
-            font-size: 26px;
-            padding-bottom: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
             color: var(--white);
-            margin-bottom: 20px;
+            margin-bottom: 60px;
             text-align: center;
-            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         form {
-            display: grid;
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
         .field {
             display: flex;
             flex-direction: column;
-            margin-bottom: 20px;
             gap: 8px;
             width: 100%;
             opacity: 0;
-            transform: translateY(50px) scaleY(0.5);
-            transition: all 0.6s ease-out;
+            transform: translateY(30px);
+            transition: all 0.5s ease-out;
         }
 
         .field.visible {
             opacity: 1;
-            transform: translateY(0) scaleY(1);
+            transform: translateY(0);
         }
 
         label {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: var(--white);
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 4px;
         }
 
         label i {
-            color: var(--white);
-            font-size: 18px;
+            color: var(--primary);
+            font-size: 16px;
+            width: 16px;
+            text-align: center;
         }
 
         input {
-            padding: 14px 20px;
-            margin-top: 5px;
-            padding-bottom: 40px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgb(0 8 32 / 0.618);
+            padding: 30px 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
             color: white;
             font-size: 16px;
+            font-family: inherit;
             width: 100%;
-            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        select {
+            padding: 16px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            /* Ensure selected text is white */
+            font-size: 16px;
+            font-family: inherit;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        select option {
+            background: var(--black);
+            /* Black background for dropdown options */
+            color: white;
+            /* White text for options */
+        }
+
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         input:focus {
             outline: none;
-            border-color: var(--white);
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .submit-btn {
-            background: var(--white);
-            color: var(--black);
-            padding: 14px 28px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 16px 32px;
             border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            font-family: inherit;
             cursor: pointer;
-            transition: background 0.2s ease, transform 0.2s ease;
-            box-shadow: 0 6px 14px rgba(255, 255, 255, 0.3);
-            justify-self: center;
-            width: 200px;
+            transition: all 0.2s ease;
+            margin-top: 16px;
+            align-self: center;
+            min-width: 200px;
         }
 
         .submit-btn:hover {
-            background: #e0e0e0;
+            background: var(--primary-hover);
             transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .wrap {
+                padding: 20px 16px;
+            }
+
+            .card {
+                padding: 32px 24px;
+                margin: 0 8px;
+            }
+
+            h2.title {
+                font-size: 28px;
+                margin-bottom: 32px;
+            }
+
+            .arrow,
+            .dolar,
+            .network {
+                display: none;
+            }
+
+            input {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+
+            .submit-btn {
+                padding: 14px 28px;
+                min-width: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 24px 20px;
+            }
+
+            h2.title {
+                font-size: 24px;
+            }
+
+            form {
+                gap: 20px;
+            }
         }
     </style>
 </head>
@@ -229,38 +320,100 @@
         <div class="card">
             <h2 class="title">Enter Monthly Data</h2>
             <form method="POST" action="/predict">
-                <div class="field"><label for="income"><i class="fa-solid fa-sack-dollar"></i> Income</label><input
-                        id="income" name="income" type="number" placeholder="Enter your monthly income" required></div>
-                <div class="field"><label for="house_rent"><i class="fa-solid fa-house"></i> House Rent</label><input
-                        id="house_rent" name="house_rent" type="number" placeholder="Enter house rent" required></div>
-                <div class="field"><label for="food_costs"><i class="fa-solid fa-utensils"></i> Food Costs</label><input
-                        id="food_costs" name="food_costs" type="number" placeholder="Enter food costs" required></div>
-                <div class="field"><label for="electricity"><i class="fa-solid fa-bolt"></i> Electricity</label><input
-                        id="electricity" name="electricity" type="number" placeholder="Enter electricity bill" required>
+                <div class="field">
+                    <label for="month">
+                        <i class="fa-solid fa-calendar"></i>
+                        Month
+                    </label>
+                    <select id="month" name="month" required>
+                        <option value="">Select Month</option>
+                        <option value="january">January</option>
+                        <option value="february">February</option>
+                        <option value="march">March</option>
+                        <option value="april">April</option>
+                        <option value="may">May</option>
+                        <option value="june">June</option>
+                        <option value="july">July</option>
+                        <option value="august">August</option>
+                        <option value="september">September</option>
+                        <option value="october">October</option>
+                        <option value="november">November</option>
+                        <option value="december">December</option>
+                    </select>
                 </div>
-                <div class="field"><label for="gas"><i class="fa-solid fa-fire-burner"></i> Gas</label><input id="gas"
-                        name="gas" type="number" placeholder="Enter gas bill" required></div>
-                <div class="field"><label for="water"><i class="fa-solid fa-droplet"></i> Water</label><input id="water"
-                        name="water" type="number" placeholder="Enter water bill" required></div>
-                <div class="field"><label for="misc"><i class="fa-solid fa-coins"></i> Miscellaneous</label><input
-                        id="misc" name="misc" type="number" placeholder="Other expenses" required></div>
-                <button type="submit" class="submit-btn">Submit</button>
+                <div class="field">
+                    <label for="income">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                        Monthly Income
+                    </label>
+                    <input id="income" name="income" type="number" placeholder="Enter your monthly income" required>
+                </div>
+
+                <div class="field">
+                    <label for="house_rent">
+                        <i class="fa-solid fa-house"></i>
+                        House Rent
+                    </label>
+                    <input id="house_rent" name="house_rent" type="number" placeholder="Enter house rent" required>
+                </div>
+
+                <div class="field">
+                    <label for="food_costs">
+                        <i class="fa-solid fa-utensils"></i>
+                        Food Costs
+                    </label>
+                    <input id="food_costs" name="food_costs" type="number" placeholder="Enter food costs" required>
+                </div>
+
+                <div class="field">
+                    <label for="electricity">
+                        <i class="fa-solid fa-bolt"></i>
+                        Electricity Bill
+                    </label>
+                    <input id="electricity" name="electricity" type="number" placeholder="Enter electricity bill"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="gas">
+                        <i class="fa-solid fa-fire-burner"></i>
+                        Gas Bill
+                    </label>
+                    <input id="gas" name="gas" type="number" placeholder="Enter gas bill" required>
+                </div>
+
+                <div class="field">
+                    <label for="water">
+                        <i class="fa-solid fa-droplet"></i>
+                        Water Bill
+                    </label>
+                    <input id="water" name="water" type="number" placeholder="Enter water bill" required>
+                </div>
+
+                <div class="field">
+                    <label for="misc">
+                        <i class="fa-solid fa-coins"></i>
+                        Miscellaneous Expenses
+                    </label>
+                    <input id="misc" name="misc" type="number" placeholder="Other expenses" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Get Prediction</button>
             </form>
         </div>
     </div>
 
     <script>
-        // Animate fields on scroll
-        const fields = document.querySelectorAll('.field');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // animate once only
-                }
+        // Animate fields on load with staggered timing
+        document.addEventListener('DOMContentLoaded', function () {
+            const fields = document.querySelectorAll('.field');
+
+            fields.forEach((field, index) => {
+                setTimeout(() => {
+                    field.classList.add('visible');
+                }, index * 100 + 300); // Stagger animation by 100ms each
             });
-        }, { threshold: 0.2 });
-        fields.forEach(field => observer.observe(field));
+        });
     </script>
 </body>
 

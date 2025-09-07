@@ -48,3 +48,5 @@ echo You can now run setup.bat again or start the services manually.
 echo.
 pause
 
+
+

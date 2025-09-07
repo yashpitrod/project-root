@@ -1,0 +1,65 @@
+version: "2.0"
+
+services:
+  flask-api:
+    image: yashpitroda1029/flask-api:latest
+    expose:
+      - port: 5000
+        as: 80
+        to:
+          - global: true
+
+  moneygoals-web:
+    image: yashpitroda1029/moneygoals-web:latest
+    expose:
+      - port: 4000
+        as: 80
+        to:
+          - global: true
+
+  fastapi-ml:
+    image: yashpitroda1029/fastapi-ml:latest
+    expose:
+      - port: 8080
+        as: 80
+        to:
+          - global: true
+
+profiles:
+  compute:
+    flask-api:
+      resources:
+        cpu: 0.5
+        memory: 512Mi
+        storage: 1Gi
+    moneygoals-web:
+      resources:
+        cpu: 0.5
+        memory: 512Mi
+        storage: 1Gi
+    fastapi-ml:
+      resources:
+        cpu: 0.5
+        memory: 512Mi
+        storage: 1Gi
+
+  placement:
+    westcoast:
+      pricing:
+        flask-api: "0.05"
+        moneygoals-web: "0.05"
+        fastapi-ml: "0.05"
+
+deployment:
+  flask-api:
+    profiles:
+      compute: flask-api
+      placement: westcoast
+  moneygoals-web:
+    profiles:
+      compute: moneygoals-web
+      placement: westcoast
+  fastapi-ml:
+    profiles:
+      compute: fastapi-ml
+      placement: westcoast

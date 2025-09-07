@@ -126,6 +126,33 @@ Make sure MongoDB is running on your system (default port 27017).
 
 ---
 
+## 📁 Project Structure
+
+```
+project-root/
+├── moneygoals/                 # Node.js frontend
+│   ├── src/                   # Server code
+│   ├── views/                 # EJS templates
+│   ├── public/                # Static files (images, CSS, JS)
+│   │   └── images/
+│   │       └── generated-image-4.jpg   # <-- Place your background image here, no spaces in filename!
+│   └── package.json
+├── Hackodisha/                # Python ML backend
+│   ├── app.py                 # Flask application
+│   ├── ml_models/             # ML models and data
+│   ├── templates/             # HTML templates
+│   └── requirements.txt
+├── setup.bat                  # Windows setup script
+├── setup.ps1                  # PowerShell setup script
+└── README.md
+```
+
+**Important:**  
+- All static images (like `generated-image-4.jpg`) must be placed in `moneygoals/public/images/` and have filenames **without spaces**.
+- If your image is not loading, check the filename and path, and restart your Node.js server.
+
+---
+
 ## 🛠️ Troubleshooting
 
 ### Common Issues:
@@ -147,25 +174,11 @@ Make sure MongoDB is running on your system (default port 27017).
    - Run `python generate_all_pickles.py` in the Hackodisha directory
    - Check if all pickle files are generated in `ml_models/saved_models/`
 
----
-
-## 📁 Project Structure
-
-```
-project-root/
-├── moneygoals/                 # Node.js frontend
-│   ├── src/                   # Server code
-│   ├── views/                 # EJS templates
-│   └── package.json
-├── Hackodisha/                # Python ML backend
-│   ├── app.py                 # Flask application
-│   ├── ml_models/             # ML models and data
-│   ├── templates/             # HTML templates
-│   └── requirements.txt
-├── setup.bat                  # Windows setup script
-├── setup.ps1                  # PowerShell setup script
-└── README.md
-```
+5. **Static images not loading:**
+   - Ensure your image is in `moneygoals/public/images/`
+   - Use filenames **without spaces** (e.g., `generated-image-4.jpg`)
+   - Reference images in your EJS/CSS as `/images/generated-image-4.jpg`
+   - Restart your Node.js server after adding new images
 
 ---
 

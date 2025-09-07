@@ -150,7 +150,7 @@
             position: relative;
             padding: 0.6rem 3rem;
             width: 17rem;
-            color: #2c1a1a;
+            color: #e1dede;
             background: #aaaaaa;
             font-size: 1rem;
             text-transform: uppercase;
@@ -163,11 +163,11 @@
 
         }
 
-        /* button:hover {
-    color: var(--clr);
-    text-shadow: 0 0 15px var(--clr),
-        0 0 40px var(--clr);
-} */
+        button:hover {
+            color: var(--clr);
+            text-shadow: 0 0 15px var(--clr),
+                0 0 40px var(--clr);
+        }
 
         button span {
             position: relative;
@@ -221,6 +221,7 @@
         .features {
             display: flex;
             flex-wrap: wrap;
+            background-color: white;
             gap: 1em;
             margin-top: 40px;
         }
@@ -303,15 +304,14 @@
         </div>
     </div>
     <div class="container">
-        <button class="btn" style="--clr:#d6f065; position: relative; z-index: 4;" type="button"
-            onclick="window.location.href='/predict'">
+        <button class="btn" type=" button" onclick="window.location.href='/predict'">
             <span>Get Started</span>
             <ion-icon class="arrow" name="arrow-forward-sharp"></ion-icon>
         </button>
-        <div id="debug-overlay"
+        <!-- <div id="debug-overlay"
             style="position:fixed;right:12px;bottom:12px;background:#111827;color:#e5e7eb;border:1px solid #334155;border-radius:8px;padding:8px 12px;font-size:12px;z-index:9999;opacity:0.9;">
             <span>UI ready</span>
-        </div>
+        </div> -->
     </div>
     <div class="body2">
         <h1>Savings that adapt</h1>

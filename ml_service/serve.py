@@ -97,3 +97,5 @@ def predict(data: InputData):
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8080))  # Use PORT from env vars (provided by Render)
     uvicorn.run("serve:app", host="0.0.0.0", port=port, reload=False)
+
+ML_SECRET_KEY = os.getenv("ML_SECRET_KEY", "default_secret")

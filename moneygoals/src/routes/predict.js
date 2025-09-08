@@ -8,7 +8,8 @@ router.get("/", (req, res) => {
 });
 
 // Primary: FastAPI model (ml_service/serve.py)
-const FASTAPI_URL = process.env.ML_URL || "http://127.0.0.1:8080/predict";
+const FASTAPI_URL = process.env.ML_URL || "https://ml-service-v5yx.onrender.com/predict";
+
 
 // Secondary: Flask AI recommendations (Hackodisha)
 const FLASK_URL = "http://127.0.0.1:5000/api/recommendations";

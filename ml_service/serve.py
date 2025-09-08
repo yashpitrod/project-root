@@ -8,14 +8,6 @@ from sklearn.linear_model import LinearRegression
 import os
 from fastapi.middleware.cors import CORSMiddleware
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # For demo purposes
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 # Data WITH 'misc' considered in model training
 data = {
     'income':[31000,26000,28000,27000,29563,30236,31692,30699],
@@ -38,6 +30,14 @@ model = LinearRegression()
 model.fit(X_train, y_train)
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # For demo purposes
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class InputData(BaseModel):
     income: int

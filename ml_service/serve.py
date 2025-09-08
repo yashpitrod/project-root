@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+import os
 
 # Data WITH 'misc' considered in model training
 data = {
@@ -94,5 +95,5 @@ def predict(data: InputData):
     }
 
 if __name__ == "__main__":
-    # Start FastAPI server
-    uvicorn.run("serve:app", host="0.0.0.0", port=8080, reload=False)
+    port = int(os.getenv("PORT", 8080))  # Use PORT from env vars (provided by Render)
+    uvicorn.run("serve:app", host="0.0.0.0", port=port, reload=False)

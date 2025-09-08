@@ -7,7 +7,8 @@ const dashboardRoutes = require("./routes/dashboard.js");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-const MONGO_URL = "mongodb://127.0.0.1:27017/moneygoals";
+const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/moneygoals";
+const ML_URL = process.env.ML_URL || "http://127.0.0.1:8080/predict";
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));

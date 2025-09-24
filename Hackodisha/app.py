@@ -696,6 +696,8 @@ def internal_error(error):
     <a href="{url_for('index')}" class="btn btn-primary">Go Home</a>
 </div></body></html>""", 500
 
+# ... (rest of your app.py code remains exactly the same until line 710)
+
 if __name__ == '__main__':
     print("🚀 Starting Simple Investment Advisor...")
     print(f"📂 Current directory: {os.getcwd()}")
@@ -710,5 +712,5 @@ if __name__ == '__main__':
     print("🌐 Server starting on http://localhost:5000")
     print("=" * 60)
     
-        port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
